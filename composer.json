@@ -1,0 +1,33 @@
+{
+    "name": "vendor_name/package_name",
+    "description": "description_text",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "author's name",
+            "email": "email@example.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "google/google-api-php-client",
+                "version": "0.6.6",
+                "dist": {
+                    "url": "https://google-api-php-client.googlecode.com/files/google-api-php-client-0.6.6.tar.gz",
+                    "type": "tar"
+                },
+                "autoload": {
+                    "classmap": [
+                        "src/"
+                    ]
+                }
+            }
+        }
+    ],
+    "require": {
+        "google/google-api-php-client": "0.6.6",
+        "symfony/yaml": "2.0.7"
+    }
+}
