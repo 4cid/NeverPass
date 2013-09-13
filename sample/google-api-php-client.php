@@ -5,7 +5,7 @@
 session_start();
 
 $client = new Google_Client();
-$client->setApplicationName('Google+ PHP Starter Application');
+$client->setApplicationName('NeverPass');
 // Visit https://code.google.com/apis/console?api=plus to generate your
 // client id, client secret, and to register your redirect uri.
 $client->setClientId($conf['Google_PlusService']['ClientId']);
