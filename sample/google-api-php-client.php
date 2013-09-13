@@ -4,14 +4,16 @@
 // real database or memcached.
 session_start();
 
+$conf = $config->get('Google_PlusService');
+
 $client = new Google_Client();
 $client->setApplicationName('NeverPass');
 // Visit https://code.google.com/apis/console?api=plus to generate your
 // client id, client secret, and to register your redirect uri.
-$client->setClientId($conf['Google_PlusService']['ClientId']);
-$client->setClientSecret($conf['Google_PlusService']['ClientSecret']);
-$client->setRedirectUri($conf['Google_PlusService']['RedirectUri']);
-$client->setDeveloperKey($conf['Google_PlusService']['DeveloperKey']);
+$client->setClientId($conf['ClientId']);
+$client->setClientSecret($conf['ClientSecret']);
+$client->setRedirectUri($conf['RedirectUri']);
+$client->setDeveloperKey($conf['DeveloperKey']);
 $plus = new Google_PlusService($client);
 
 if (isset($_GET['code'])) {

@@ -1,6 +1,7 @@
 <?php
-// Composer Autoload
-require_once __DIR__ . '/vendor/autoload.php';
+
+// core
+require_once __DIR__ . '/bootstrap.php';
 
 session_start();
 
