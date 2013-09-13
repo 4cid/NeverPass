@@ -4,7 +4,7 @@
 // real database or memcached.
 session_start();
 
-$conf = $config->get('Google_PlusService');
+$conf = $container['config']->get('Google_PlusService');
 
 $client = new Google_Client();
 $client->setApplicationName('NeverPass');
