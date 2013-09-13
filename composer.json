@@ -1,11 +1,11 @@
 {
-    "name": "vendor_name/package_name",
-    "description": "description_text",
+    "name": "ROMOPAT/NeverPass",
+    "description": "...",
     "minimum-stability": "stable",
     "authors": [
         {
-            "name": "author's name",
-            "email": "email@example.com"
+            "name": "Patrick Romowicz",
+            "email": "patrick@romowicz.de"
         }
     ],
     "repositories": [
