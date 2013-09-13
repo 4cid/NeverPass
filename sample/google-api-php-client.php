@@ -30,12 +30,14 @@ if ($client->getAccessToken()) {
     //print 'Your Activities: <pre>' . print_r($activities, true) . '</pre>';
 
     $me = $plus->people->get('me');
-    print 'Me: <pre>' . print_r($me, true) . '</pre>';
+    echo '<h1>', $me['displayName'], '</h1>';
+    echo '<img src="' . $me['image']['url'] . '"/>';
+    echo '<p><a href="/logout">Logout</a></p>';
 
     // We're not done yet. Remember to update the cached access token.
     // Remember to replace $_SESSION with a real database or memcached.
     $_SESSION['token'] = $client->getAccessToken();
 } else {
     $authUrl = $client->createAuthUrl();
-    print "<a href='$authUrl'>Connect Me!</a>";
+    echo sprintf('<a href="%s">Connect Me!</a>', $authUrl);
 }

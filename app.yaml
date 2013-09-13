@@ -5,5 +5,7 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /logout
+  script: logout.php
 - url: .*
   script: main.php
