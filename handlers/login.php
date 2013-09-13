@@ -1,10 +1,11 @@
 <?php
 
-// Set your cached access token. Remember to replace $_SESSION with a
-// real database or memcached.
-session_start();
+// core
+require_once __DIR__ . '/../bootstrap.php';
 
 $conf = $container->getConfig()->get('Google_PlusService');
+$session = $container->getSession();
+
 
 $client = new Google_Client();
 $client->setApplicationName('NeverPass');
@@ -18,13 +19,16 @@ $plus = new Google_PlusService($client);
 
 if (isset($_GET['code'])) {
     $client->authenticate();
-    $_SESSION['token'] = $client->getAccessToken();
+    //$_SESSION['token'] = $client->getAccessToken();
+    $session->set('token', $client->getAccessToken());
     $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
     header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
 }
 
-if (isset($_SESSION['token'])) {
-    $client->setAccessToken($_SESSION['token']);
+//if (isset($_SESSION['token'])) {
+if ($session->has('token')) {
+    //$client->setAccessToken($_SESSION['token']);
+    $client->setAccessToken($session->get('token'));
 }
 
 if ($client->getAccessToken()) {
@@ -38,7 +42,8 @@ if ($client->getAccessToken()) {
 
     // We're not done yet. Remember to update the cached access token.
     // Remember to replace $_SESSION with a real database or memcached.
-    $_SESSION['token'] = $client->getAccessToken();
+    //$_SESSION['token'] = $client->getAccessToken();
+    $session->set('token', $client->getAccessToken());
 } else {
     $authUrl = $client->createAuthUrl();
     echo sprintf('<a href="%s">Connect Me!</a>', $authUrl);
