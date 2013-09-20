@@ -6,11 +6,9 @@ threadsafe: true
 
 handlers:
 - url: /css
-  static_dir: css
+  static_dir: static/css
 - url: /js
-  static_dir: javascript
-- url: /map
-  script: handlers/map.php
+  static_dir: static/js
 - url: /login
   script: handlers/login.php
 - url: /logout
