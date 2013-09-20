@@ -1,5 +1,5 @@
 Google_PlusService:
-  ClientId:
-  ClientSecret:
-  RedirectUri:
-  DeveloperKey:
+  ClientId: YOUR_CLIENTID
+  ClientSecret: YOUR_CLIENTSECRET
+  RedirectUri: http://YOUR_HOST
+  DeveloperKey: YOUR_APIKEY
