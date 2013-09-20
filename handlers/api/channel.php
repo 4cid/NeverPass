@@ -21,9 +21,10 @@ $channel->addUser($user);
 $longitude = $request->get('lon');
 $latitude = $request->get('lat');
 $heading = $request->get('hdg');
+$accuracy = $request->get('acc');
 
-if (strlen($longitude) && strlen($latitude) && strlen($heading)) {
-    $location = new \NeverPass\Location($heading, $latitude, $longitude, $user->getId());
+if (strlen($longitude) && strlen($latitude) && strlen($heading) && strlen($accuracy)) {
+    $location = new \NeverPass\Location($heading, $latitude, $longitude, $accuracy, $user->getId());
     $channel->addLocation($location);
 }
 // Save channel to Memcached
