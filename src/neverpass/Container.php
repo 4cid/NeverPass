@@ -70,8 +70,19 @@ class Container extends \Pimple
         $this['url'] = $this->share(function (Container $c) {
             return $c->getRequest()->getScheme() . '://' . $c->getRequest()->getHttpHost();
         });
+
+        $this['isUserLoggedIn'] = function (Container $c) {
+            return $c->getSession()->has('currentuser') && ($c->getSession()->get('currentuser') instanceof User);
+        };
     }
 
+    /**
+     * @return bool
+     */
+    public function isUserLoggedIn()
+    {
+        return $this['isUserLoggedIn'];
+    }
 
     /**
      * @param $name

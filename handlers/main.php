@@ -28,8 +28,16 @@
                 <li><a href="#contact" data-toggle="tab">Contact</a></li>
             </ul>
             <div class="navbar-form navbar-left">
-                <button class="btn btn-default">Start Channel</button></li>
+                <button class="btn btn-default">Start Channel</button>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                <?php if($container->isUserLoggedIn()) { ?>
+                    <li><a href="/logout">Logout</a></li>
+                    <li><img width="100%" src="<?php echo $container->getCurrentUser()->getImageUrl() ?>" ></li>
+                <?php } else { ?>
+                    <li><a href="/login">Login</a></li>
+                <?php } ?>
+            </ul>
         </div>
         <!--/.nav-collapse -->
     </div>
