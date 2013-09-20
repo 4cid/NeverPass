@@ -17,6 +17,7 @@ use Symfony\Component\Yaml\Parser;
  * @method \Symfony\Component\HttpFoundation\Session\Session getSession()
  * @method \NeverPass\Config getConfig()
  * @method \NeverPass\User getCurrentUser()
+ * @method string getUrl();
  */
 class Container extends \Pimple
 {
@@ -64,6 +65,10 @@ class Container extends \Pimple
                 }
             }
             throw new \Exception('No user in session!');
+        });
+
+        $this['url'] = $this->share(function (Container $c) {
+            return $c->getRequest()->getScheme() . '://' . $c->getRequest()->getHttpHost();
         });
     }
 
