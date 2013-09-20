@@ -51,7 +51,7 @@ class Container extends \Pimple
             $client->setApplicationName('NeverPass');
             $client->setClientId($conf['ClientId']);
             $client->setClientSecret($conf['ClientSecret']);
-            $client->setRedirectUri($conf['RedirectUri']);
+            $client->setRedirectUri($c->getUrl() . $conf['RedirectUri']);
             $client->setDeveloperKey($conf['DeveloperKey']);
             return $client;
         });
