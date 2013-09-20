@@ -9,5 +9,7 @@ handlers:
   script: handlers/login.php
 - url: /logout
   script: handlers/logout.php
+- url: /channel
+  script: handlers/channel.php
 - url: .*
   script: handlers/main.php
