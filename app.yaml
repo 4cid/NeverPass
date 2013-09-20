@@ -5,6 +5,12 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /css
+  static_dir: css
+- url: /js
+  static_dir: javascript
+- url: /map
+  script: handlers/map.php
 - url: /login
   script: handlers/login.php
 - url: /logout
