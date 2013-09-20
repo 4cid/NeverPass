@@ -35,13 +35,13 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container container-slim">
 
     <div class="tab-content">
-        <div class="tab-pane active" id="home">
+        <div class="tab-pane map active" id="home">
 
-            <div id="the-map" style="background-color: #444; height: 300px"></div>
             <div><pre id="log"></pre></div>
+            <div id="the-map" style="background-color: #444;"></div>
 
         </div>
         <div class="tab-pane" id="about">

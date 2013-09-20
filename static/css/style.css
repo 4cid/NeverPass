@@ -1,3 +1,30 @@
 body {
-    padding-top: 70px;
+    padding-top: 65px;
+}
+
+html, body, .container, .tab-content, .map {
+    height: 100%;
+}
+
+.map {
+    position: relative;
+    min-height: 600px;
+}
+
+#the-map {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 767px) {
+    .container-slim {
+        padding: 0;
+    }
+
+    body {
+        padding-top: 50px;
+    }
 }
