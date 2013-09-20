@@ -1,7 +1,7 @@
 <?php
 
 // core
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 $request = $container->getRequest();
 $user = $container->getCurrentUser();
@@ -22,6 +22,6 @@ if ($channelId = $request->get('id')) {
     $channel = new \NeverPass\Channel();
     $channel->addUser($user);
     $channel->save();
-    $response = new \Symfony\Component\HttpFoundation\RedirectResponse('http://neverpass.de:8080/channel?id=' . $channel->getId());
+    $response = new \Symfony\Component\HttpFoundation\RedirectResponse('http://neverpass.de:8080/api/channel?id=' . $channel->getId());
     $response->send();
 }
