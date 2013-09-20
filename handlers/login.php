@@ -3,32 +3,19 @@
 // core
 require_once __DIR__ . '/../bootstrap.php';
 
-$conf = $container->getConfig()->get('Google_PlusService');
+$client = $container->getGoogleClient();
 $session = $container->getSession();
-
-
-$client = new Google_Client();
-$client->setApplicationName('NeverPass');
-// Visit https://code.google.com/apis/console?api=plus to generate your
-// client id, client secret, and to register your redirect uri.
-$client->setClientId($conf['ClientId']);
-$client->setClientSecret($conf['ClientSecret']);
-$client->setRedirectUri($conf['RedirectUri']);
-$client->setDeveloperKey($conf['DeveloperKey']);
 $plus = new Google_PlusService($client);
 
 if (isset($_GET['code'])) {
     $client->authenticate();
-    //$_SESSION['token'] = $client->getAccessToken();
-    $session->set('token', $client->getAccessToken());
+    $session->set('gptoken', $client->getAccessToken());
     $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
     header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
 }
 
-//if (isset($_SESSION['token'])) {
-if ($session->has('token')) {
-    //$client->setAccessToken($_SESSION['token']);
-    $client->setAccessToken($session->get('token'));
+if ($session->has('gptoken')) {
+    $client->setAccessToken($session->get('gptoken'));
 }
 
 if ($client->getAccessToken()) {
@@ -42,8 +29,15 @@ if ($client->getAccessToken()) {
 
     // We're not done yet. Remember to update the cached access token.
     // Remember to replace $_SESSION with a real database or memcached.
-    //$_SESSION['token'] = $client->getAccessToken();
-    $session->set('token', $client->getAccessToken());
+    $session->set('gptoken', $client->getAccessToken());
+
+    // Set current user to session
+    $user = new \NeverPass\User();
+    $user->setDisplayName($me['displayName']);
+    $user->setImageUrl($me['image']['url']);
+    $user->setId($me['id']);
+    $session->set('currentuser', $user);
+
 } else {
     $authUrl = $client->createAuthUrl();
     echo sprintf('<a href="%s">Connect Me!</a>', $authUrl);

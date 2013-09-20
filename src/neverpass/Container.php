@@ -12,10 +12,14 @@ use Symfony\Component\Yaml\Parser;
  * Class Container
  * @package NeverPass
  * @link    http://pimple.sensiolabs.org/
+ * @method \Google_Client getGoogleClient()
+ * @method \Symfony\Component\HttpFoundation\Request getRequest()
+ * @method \Symfony\Component\HttpFoundation\Session\Session getSession()
+ * @method \NeverPass\Config getConfig()
+ * @method \NeverPass\User getCurrentUser()
  */
 class Container extends \Pimple
 {
-
     /**
      * @param array $values
      */
@@ -24,44 +28,58 @@ class Container extends \Pimple
         parent::__construct($values);
 
         // Setup Config
-        $this['config'] = $this->share(function ($c) {
+        $this['config'] = $this->share(function (Container $c) {
             if (!file_exists(DOCUMENT_ROOT . '/config/conf.yml')) throw new \Exception('conf.yml is missing');
             return new Config(DOCUMENT_ROOT . '/config/conf.yml', new Parser());
         });
 
-        $this['session'] = $this->share(function ($c) {
+        $this['session'] = $this->share(function (Container $c) {
             $storage = new NativeSessionStorage(array(), new MemcachedSessionHandler(new \Memcached()));
             $session = new Session($storage);
             $session->start();
             return $session;
         });
 
-        $this['request'] = $this->share(function ($c) {
+        $this['request'] = $this->share(function (Container $c) {
             return Request::createFromGlobals();
+        });
+
+        $this['googleclient'] = $this->share(function (Container $c) {
+            $conf = $c->getConfig()->get('Google_PlusService');
+            $client = new \Google_Client();
+            $client->setApplicationName('NeverPass');
+            $client->setClientId($conf['ClientId']);
+            $client->setClientSecret($conf['ClientSecret']);
+            $client->setRedirectUri($conf['RedirectUri']);
+            $client->setDeveloperKey($conf['DeveloperKey']);
+            return $client;
+        });
+
+        $this['currentuser'] = $this->share(function (Container $c) {
+            $session = $c->getSession();
+            if ($session->has('currentuser')) {
+                $user = $session->get('currentuser');
+                if ($user instanceof User) {
+                    return $user;
+                }
+            }
+            throw new \Exception('No user in session!');
         });
     }
 
-    /**
-     * @return Config
-     */
-    public function getConfig()
-    {
-        return $this['config'];
-    }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Session\Session
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     * @throws \Exception
      */
-    public function getSession()
+    function __call($name, $arguments)
     {
-        return $this['session'];
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public function getRequest()
-    {
-        return $this['request'];
+        $offset = strtolower(substr($name, 3));
+        if ($this->offsetExists($offset)) {
+            return $this[$offset];
+        }
+        throw new \Exception('Call to undefined method.');
     }
 } 
