@@ -27,9 +27,22 @@
                 <li><a href="#about" data-toggle="tab">About</a></li>
                 <li><a href="#contact" data-toggle="tab">Contact</a></li>
             </ul>
-            <div class="navbar-form navbar-left">
-                <button class="btn btn-default">Start Channel</button>
-            </div>
+            <ul class="nav navbar-nav navbar-form">
+                <li><button class="btn btn-default" style="margin-right: 5px">Start Channel</button></li>
+                <li>
+                    <!-- https://developers.google.com/+/web/share/interactive -->
+                    <button
+                        class="g-interactivepost btn btn-default"
+                        data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
+                        data-contenturl="http://10-0-0-25.neverpass.me:8080/"
+                        data-calltoactionlabel="INVITE"
+                        data-prefilltext="Join my NeverPass channel!"
+                        data-calltoactionurl="http://10-0-0-25.neverpass.me:8080/"
+                        data-cookiepolicy="single_host_origin">
+                        Tell your friends
+                    </button>
+                </li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if($container->isUserLoggedIn()) { ?>
                     <li><a href="/logout">Logout</a></li>
@@ -76,5 +89,12 @@
 <script src="//maps.googleapis.com/maps/api/js?key=<?= $container->getConfig()->get('Google_PlusService.DeveloperKey') ?>&sensor=true"></script>
 <script src="/js/channel.js"></script>
 <script src="/js/app.js"></script>
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/client:plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
 </body>
 </html>
