@@ -3,3 +3,9 @@ Google_PlusService:
   ClientSecret: YOUR_CLIENTSECRET
   RedirectUri: http://YOUR_HOST
   DeveloperKey: YOUR_APIKEY
+Database:
+  host: IP/ Domain
+  username: YOUR_USERNAME
+  password: YOUR_PASSWORD
+  dbname: YOUR_DATABASE_NAME
+  socket: YOUR_SOCKET

@@ -18,7 +18,8 @@ use Symfony\Component\Yaml\Parser;
  * @method \Symfony\Component\HttpFoundation\Session\Session getSession()
  * @method \NeverPass\Config getConfig()
  * @method \NeverPass\User getCurrentUser()
- * @method string getUrl();
+ * @method string getUrl()
+ * @method \mysqli|null getMySQL()
  */
 class Container extends \Pimple
 {
@@ -75,6 +76,19 @@ class Container extends \Pimple
         $this['isUserLoggedIn'] = function (Container $c) {
             return $c->getSession()->has('currentuser') && ($c->getSession()->get('currentuser') instanceof User);
         };
+
+        $this['mysql'] = $this->share(function (Container $c) {
+            $config = $c->getConfig();
+            if (!$config->get('Database')) return null;
+            return new \mysqli(
+                $config->get('Database.host'),
+                $config->get('Database.username'),
+                $config->get('Database.password'),
+                $config->get('Database.dbname'),
+                $config->get('Database.port'),
+                $config->get('Database.socket')
+            );
+        });
     }
 
     /**

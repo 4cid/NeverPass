@@ -68,12 +68,25 @@ class Channel
         return $return;
     }
 
-    public function save(\Memcached $memcached = null)
+    /**
+     * @param \Memcached $memcached
+     * @param \mysqli $sql
+     */
+    public function save(\Memcached $memcached = null, \mysqli $sql = null)
     {
         if (is_null($memcached)) {
             $memcached = new \Memcached;
         }
         $memcached->set('channel-' . $this->getId(), $this);
+        if (!is_null($sql)) {
+            $sql->query(
+                sprintf(
+                    "REPLACE INTO `channel` (`id`, `value`) VALUES ('%s', '%s');",
+                    $sql->real_escape_string($this->getId()),
+                    $sql->real_escape_string(serialize($this))
+                )
+            );
+        }
     }
 
     /**
@@ -135,14 +148,27 @@ class Channel
     /**
      * @param $id
      * @param \Memcached $memcached
+     * @param \mysqli $sql
      * @return Channel
      */
-    public static function getCached($id, \Memcached $memcached = null)
+    public static function getCached($id, \Memcached $memcached = null, \mysqli $sql = null)
     {
         if (is_null($memcached)) {
             $memcached = new \Memcached;
         }
         $channel = $memcached->get('channel-' . $id);
+        if (is_null($channel) && !is_null($sql)) {
+            if ($result = $sql->query(sprintf("SELECT * FROM `channel` WHERE `id` = '%s'", $sql->real_escape_string($id)))) {
+                $blob = $result->fetch_assoc();
+                if ($blob['value']) {
+                    $obj = unserialize($blob['value']);
+                    if ($obj instanceof Channel) {
+                        $channel = $obj;
+                    }
+                }
+            }
+
+        }
         if (!($channel instanceof Channel)) {
             $channel = new Channel($id);
         }

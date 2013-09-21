@@ -19,5 +19,7 @@ handlers:
   script: handlers/main.php
 - url: /
   script: handlers/main.php
+- url: /play
+  script: handlers/play.php
 - url: .*
   script: handlers/404.php

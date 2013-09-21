@@ -21,15 +21,18 @@ $request = $container->getRequest();
 // Init Channel
 if ($channelId = $request->get('id')) {
     // Channel available
-    $channel = \NeverPass\Channel::getCached($channelId);
+    $channel = \NeverPass\Channel::getCached($channelId, null, $container->getMySQL());
 } else {
     $channel = new \NeverPass\Channel();
 }
+
+$save = false;
 
 // Add User
 if (!array_key_exists($user->getId(), $channel->getUsers())) {
     $channel->setTimestamp(time());
     $channel->addUser($user);
+    $save = true;
 }
 
 // Init Location
@@ -49,10 +52,13 @@ if (strlen($longitude) && strlen($latitude) && strlen($heading) && strlen($accur
     if ($location) {
         $channel->addLocation($location);
         $channel->setTimestamp(time());
+        $save = true;
     }
 }
-// Save channel to Memcached
-$channel->save();
+// Save channel
+if ($save) {
+    $channel->save(null, $container->getMySQL());
+}
 
 // Long polling
 if (($timestamp = $request->get('timestamp')) && ($channelId = $request->get('id'))) {
