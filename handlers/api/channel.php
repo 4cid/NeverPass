@@ -40,8 +40,16 @@ $accuracy = $request->get('acc');
 
 if (strlen($longitude) && strlen($latitude) && strlen($heading) && strlen($accuracy)) {
     $location = new \NeverPass\Location($heading, $latitude, $longitude, $accuracy, $user->getId());
-    $channel->addLocation($location);
-    $channel->setTimestamp(time());
+    // is location changing?
+    if (array_key_exists($user->getId(), $channel->getLocations())) {
+        if ($location->getHash() == $channel->getLocations()[$user->getId()]->getHash()) {
+            $location = false;
+        }
+    }
+    if ($location) {
+        $channel->addLocation($location);
+        $channel->setTimestamp(time());
+    }
 }
 // Save channel to Memcached
 $channel->save();

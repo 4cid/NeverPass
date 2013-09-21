@@ -93,4 +93,22 @@ class Location
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return md5(
+            json_encode(
+                array(
+                    $this->getLatitude(),
+                    $this->getLatitude(),
+                    $this->getAccuracy(),
+                    $this->getHeading(),
+                    $this->getUserId(),
+                )
+            )
+        );
+    }
 } 
