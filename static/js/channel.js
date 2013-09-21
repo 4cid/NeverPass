@@ -65,8 +65,9 @@ Channel.prototype.update = function () {
  * @param location
  */
 Channel.prototype.setLocation = function (location) {
-    location || (location = {});
-    this.location = location;
+    if (location instanceof Location) {
+        this.location = location;
+    }
 };
 
 Channel.prototype.start = function () {
