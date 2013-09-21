@@ -1,4 +1,21 @@
-<?php require_once __DIR__ . '/../bootstrap.php'; ?><!DOCTYPE html>
+<?php
+
+// core
+require_once __DIR__ . '/../bootstrap.php';
+
+$request = $container->getRequest();
+$uri = substr((string)$request->getRequestUri(), 1);
+$channel = false;
+if ($uri) {
+    try {
+        $channel = \NeverPass\Channel::getCached($uri);
+    } catch (\Exception $e) {
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($container->getUrl());
+        $response->send();
+        exit;
+    }
+}
+?><!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -106,6 +123,11 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="//maps.googleapis.com/maps/api/js?key=<?= $container->getConfig()->get('Google_PlusService.DeveloperKey') ?>&sensor=true"></script>
+<script>
+    var app = {
+       channelId: '<?= $channel ? $channel->getId() : '' ?>';
+    };
+</script>
 <script src="/js/channel.js"></script>
 <script src="/js/app.js"></script>
 <script type="text/javascript">

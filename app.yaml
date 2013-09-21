@@ -15,5 +15,7 @@ handlers:
   script: handlers/logout.php
 - url: /api/channel
   script: handlers/api/channel.php
-- url: .*
+- url: /\w{32}
+  script: handlers/main.php
+- url: /
   script: handlers/main.php
