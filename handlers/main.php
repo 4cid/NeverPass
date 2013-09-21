@@ -51,10 +51,10 @@ if ($uri) {
                     <button
                         class="g-interactivepost btn btn-default"
                         data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
-                        data-contenturl="<?= $container->getUrl() ?>"
+                        data-contenturl="<?= $container->getUrl() . $request->getRequestUri() ?>"
                         data-calltoactionlabel="INVITE"
                         data-prefilltext="Join my NeverPass channel!"
-                        data-calltoactionurl="<?= $container->getUrl() ?>"
+                        data-calltoactionurl="<?= $container->getUrl() . $request->getRequestUri() ?>"
                         data-cookiepolicy="single_host_origin">
                         Tell your friends
                     </button>
@@ -65,7 +65,7 @@ if ($uri) {
                     <li><a href="/logout">Logout</a></li>
                     <li><img width="100%" src="<?php echo $container->getCurrentUser()->getImageUrl() ?>" ></li>
                 <?php } else { ?>
-                    <li><a href="/login">Login</a></li>
+                    <li><a href="/login<?= $channel ? '?channelId=' . $channel->getId() : '' ?>">Login</a></li>
                 <?php } ?>
             </ul>
         </div>
@@ -113,7 +113,7 @@ if ($uri) {
                 Please log in now!
             </div>
             <div class="modal-footer">
-                <a href="/login" type="button" class="btn btn-primary">Login</a>
+                <a href="/login<?= $channel ? '?channelId=' . $channel->getId() : '' ?>" type="button" class="btn btn-primary">Login</a>
             </div>
         </div>
     </div>
