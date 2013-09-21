@@ -1,3 +1,11 @@
+/**
+ * Location Obj
+ * @param heading
+ * @param latitude
+ * @param longitude
+ * @param accuracy
+ * @constructor
+ */
 var Location = function (heading, latitude, longitude, accuracy) {
     this.hdg = heading;
     this.lat = latitude;
@@ -5,6 +13,12 @@ var Location = function (heading, latitude, longitude, accuracy) {
     this.acc = accuracy;
 };
 
+/**
+ * Channel Obj
+ * @param param
+ * @returns {Channel}
+ * @constructor
+ */
 var Channel = function (param) {
     this.location = {};
     this.id = '';
@@ -47,6 +61,9 @@ Channel.prototype.update = function () {
         }, this));
 };
 
+/**
+ * @param location
+ */
 Channel.prototype.setLocation = function (location) {
     location || (location = {});
     this.location = location;
@@ -66,8 +83,14 @@ Channel.prototype.stop = function () {
     }
 };
 
+/**
+ * Set onUpdate listener
+ * @param func
+ * @returns {Channel}
+ */
 Channel.prototype.onUpdate = function (func) {
     if (typeof func == 'function') {
         this.onUpdate = func;
     }
+    return this;
 };
