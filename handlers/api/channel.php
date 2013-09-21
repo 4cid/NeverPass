@@ -4,8 +4,17 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 $request = $container->getRequest();
-$user = $container->getCurrentUser();
-
+try {
+    $user = $container->getCurrentUser();
+} catch (\Exception $e) {
+    if ($e instanceof \NeverPass\exception\LoginException) {
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse('Unauthorized', 401);
+        $response->send();
+        exit;
+    } else {
+        throw $e;
+    }
+}
 // Init Channel
 if ($channelId = $request->get('id')) {
     // Channel available

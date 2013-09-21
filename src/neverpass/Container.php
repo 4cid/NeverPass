@@ -2,6 +2,7 @@
 
 namespace NeverPass;
 
+use NeverPass\exception\LoginException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
@@ -64,7 +65,7 @@ class Container extends \Pimple
                     return $user;
                 }
             }
-            throw new \Exception('No user in session!');
+            throw new LoginException('No user in session!');
         });
 
         $this['url'] = $this->share(function (Container $c) {
