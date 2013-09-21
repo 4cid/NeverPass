@@ -9,6 +9,8 @@ handlers:
   static_dir: static/css
 - url: /js
   static_dir: static/js
+- url: /lib
+  static_dir: static/lib
 - url: /login
   script: handlers/login.php
 - url: /logout

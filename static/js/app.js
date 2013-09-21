@@ -92,6 +92,10 @@
         activeChannel = new Channel(app.channelId != '' ? app.channelId : null, currentPos);
         activeChannel.onUpdate(
             function (channel) {
+                if (app.channelId == '') {
+                    app.channelId = channel.id;
+                    History.pushState(null, null, "/" + channel.id);
+                }
                 if (!channel.locations.length) {
                     return
                 }

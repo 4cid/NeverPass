@@ -1,0 +1,6 @@
+{
+    "name": "NeverPass",
+    "dependencies": {
+        "history.js": "1.8.0b2"
+    }
+}
