@@ -75,6 +75,8 @@ class Container extends \Pimple
         $this['isUserLoggedIn'] = function (Container $c) {
             return $c->getSession()->has('currentuser') && ($c->getSession()->get('currentuser') instanceof User);
         };
+
+        $this->getSession();
     }
 
     /**

@@ -15,25 +15,30 @@ var Location = function (heading, latitude, longitude, accuracy) {
 
 /**
  * Channel Obj
- * @param param
+ * @param {String} [channelId] channelId
+ * @param {Location} [location] Location-Parameter
  * @returns {Channel}
  * @constructor
  */
-var Channel = function (param) {
+var Channel = function (channelId, location) {
     this.location = {};
     this.id = '';
     this.url = '';
     this.users = [];
     this.locations = [];
-    this.intervall = null;
+    this.timeout = null;
+    this.timestamp = 0;
 
-    this.onUpdate = function () {
-    };
+    this.onUpdateHandler = function () {};
+    this.onNotAuthorizedHandler = function () {};
 
-    if (param instanceof Location) {
-        this.location = param;
-    } else if (param) {
-        this.id = param;
+    for (var i = 0; i < arguments.length; i++) {
+        var param = arguments[i];
+        if (param instanceof Location) {
+            this.location = param;
+        } else if (param) {
+            this.id = param;
+        }
     }
 
     // first init!
@@ -46,9 +51,12 @@ Channel.prototype.update = function () {
     console.log('Channel update...');
     var data = {};
     if (this.id.length) {
-        jQuery.extend(data, {id: this.id});
+        data.id = this.id;
     }
     jQuery.extend(data, this.location);
+    if (this.timestamp) {
+        data.timestamp = this.timestamp;
+    }
     $.ajax({
         dataType: 'JSON',
         type: 'GET',
@@ -57,7 +65,14 @@ Channel.prototype.update = function () {
     })
         .done(jQuery.proxy(function (json) {
             jQuery.extend(this, json);
-            this.onUpdate(this);
+            this.onUpdateHandler(this);
+            this.start();
+        }, this))
+        .fail(jQuery.proxy(function(xhr) {
+            this.stop();
+            if (xhr.status == 401) {
+                this.onNotAuthorizedHandler();
+            }
         }, this));
 };
 
@@ -72,15 +87,15 @@ Channel.prototype.setLocation = function (location) {
 
 Channel.prototype.start = function () {
     this.stop();
-    this.intervall = window.setInterval(jQuery.proxy(function () {
+    this.timeout = window.setTimeout(jQuery.proxy(function () {
         this.update()
-    }, this), 5000);
+    }, this), 10);
 };
 
 Channel.prototype.stop = function () {
     console.log('Channel stop..');
-    if (this.intervall != null) {
-        window.clearInterval(this.intervall);
+    if (this.timeout != null) {
+        window.clearInterval(this.timeout);
     }
 };
 
@@ -91,7 +106,19 @@ Channel.prototype.stop = function () {
  */
 Channel.prototype.onUpdate = function (func) {
     if (typeof func == 'function') {
-        this.onUpdate = func;
+        this.onUpdateHandler = func;
+    }
+    return this;
+};
+
+/**
+ * Set onNotAuthorized listener
+ * @param func
+ * @returns {Channel}
+ */
+Channel.prototype.onNotAuthorized = function (func) {
+    if (typeof func == 'function') {
+        this.onNotAuthorizedHandler = func;
     }
     return this;
 };
