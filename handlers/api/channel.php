@@ -3,7 +3,7 @@
 // core
 require_once __DIR__ . '/../../bootstrap.php';
 
-$request = $container->getRequest();
+// Check User LogIn
 try {
     $user = $container->getCurrentUser();
 } catch (\Exception $e) {
@@ -15,6 +15,9 @@ try {
         throw $e;
     }
 }
+// Request
+$request = $container->getRequest();
+
 // Init Channel
 if ($channelId = $request->get('id')) {
     // Channel available
@@ -24,7 +27,10 @@ if ($channelId = $request->get('id')) {
 }
 
 // Add User
-$channel->addUser($user);
+if (!array_key_exists($user->getId(), $channel->getUsers())) {
+    $channel->setTimestamp(time());
+    $channel->addUser($user);
+}
 
 // Init Location
 $longitude = $request->get('lon');
@@ -35,9 +41,21 @@ $accuracy = $request->get('acc');
 if (strlen($longitude) && strlen($latitude) && strlen($heading) && strlen($accuracy)) {
     $location = new \NeverPass\Location($heading, $latitude, $longitude, $accuracy, $user->getId());
     $channel->addLocation($location);
+    $channel->setTimestamp(time());
 }
 // Save channel to Memcached
 $channel->save();
+
+// Long polling
+if (($timestamp = $request->get('timestamp')) && ($channelId = $request->get('id'))) {
+    $sec = 0;
+    while ($channel->getTimestamp() <= $timestamp) {
+        if ($sec >= 20) break;
+        sleep(5);
+        $channel = \NeverPass\Channel::getCached($channelId);
+        $sec += 5;
+    }
+}
 
 // create response
 $data = $channel->toArray();

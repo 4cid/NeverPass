@@ -11,6 +11,8 @@ class Channel
     private $users = array();
     /** @var Location[] */
     private $locations = array();
+    /** @var int */
+    private $timestamp = 0;
 
     function __construct($id = false)
     {
@@ -22,6 +24,7 @@ class Channel
             }
         }
         $this->id = $id;
+        $this->timestamp = time();
     }
 
     /**
@@ -58,7 +61,8 @@ class Channel
         $return = array(
             'id' => $this->getId(),
             'users' => $users,
-            'locations' => $locations
+            'locations' => $locations,
+            'timestamp' => $this->getTimestamp()
         );
 
         return $return;
@@ -110,6 +114,22 @@ class Channel
     public function getLocations()
     {
         return $this->locations;
+    }
+
+    /**
+     * @param int $timestamp
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 
     /**
