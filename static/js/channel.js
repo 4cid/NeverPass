@@ -33,7 +33,7 @@ Channel.prototype.update = function () {
         }, this));
 };
 
-Channel.prototype.updateLocation = function (location) {
+Channel.prototype.setLocation = function (location) {
     location || (location = {});
     this.location = location;
 };
