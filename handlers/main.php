@@ -28,16 +28,16 @@
                 <li><a href="#contact" data-toggle="tab">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-form">
-                <li><button class="btn btn-default" style="margin-right: 5px">Start Channel</button></li>
+                <li><button class="btn btn-default" id="btn-start" style="margin-right: 5px">Start Channel</button></li>
                 <li>
                     <!-- https://developers.google.com/+/web/share/interactive -->
                     <button
                         class="g-interactivepost btn btn-default"
                         data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
-                        data-contenturl="http://10-0-0-25.neverpass.me:8080/"
+                        data-contenturl="<?= $container->getUrl() ?>"
                         data-calltoactionlabel="INVITE"
                         data-prefilltext="Join my NeverPass channel!"
-                        data-calltoactionurl="http://10-0-0-25.neverpass.me:8080/"
+                        data-calltoactionurl="<?= $container->getUrl() ?>"
                         data-cookiepolicy="single_host_origin">
                         Tell your friends
                     </button>
@@ -82,8 +82,27 @@
 
         </div>
     </div>
-
 </div>
+
+<!-- Modals -->
+<div class="modal fade" id="modal-notLoggedIn" tabindex="-1" role="dialog" aria-labelledby="Not logged in" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Not logged in</h4>
+            </div>
+            <div class="modal-body">
+                Please log in now!
+            </div>
+            <div class="modal-footer">
+                <a href="/login" type="button" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="//maps.googleapis.com/maps/api/js?key=<?= $container->getConfig()->get('Google_PlusService.DeveloperKey') ?>&sensor=true"></script>
