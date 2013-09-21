@@ -1,10 +1,10 @@
 Google_PlusService:
   ClientId: YOUR_CLIENTID
   ClientSecret: YOUR_CLIENTSECRET
-  RedirectUri: http://YOUR_HOST
+  RedirectUri: /login
   DeveloperKey: YOUR_APIKEY
 Database:
-  host: IP/ Domain
+  host: YOUR_IT_OR_HOSTNAME
   username: YOUR_USERNAME
   password: YOUR_PASSWORD
   dbname: YOUR_DATABASE_NAME

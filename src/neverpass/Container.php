@@ -49,6 +49,9 @@ class Container extends \Pimple
 
         $this['googleclient'] = $this->share(function (Container $c) {
             $conf = $c->getConfig()->get('Google_PlusService');
+            if (!$conf) {
+                throw new \Exception('Missing Google_PlusService in conf.yml');
+            }
             $client = new \Google_Client();
             $client->setApplicationName('NeverPass');
             $client->setClientId($conf['ClientId']);
@@ -102,6 +105,7 @@ class Container extends \Pimple
     /**
      * @param $name
      * @param $arguments
+     *
      * @return mixed
      * @throws \Exception
      */

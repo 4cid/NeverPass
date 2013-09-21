@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     // Load map
@@ -13,14 +13,14 @@
 
         var markerBuffer = {};
         return {
-            setMarker : function(lat, lon, img, text, id) {
+            setMarker: function (lat, lon, img, text, id) {
                 var marker = markerBuffer[id];
                 if (img != null) {
                     img = {
-                        url     : img,
-                        size    : new google.maps.Size(50, 50),
-                        origin  : new google.maps.Point(0,0),
-                        anchor  : new google.maps.Point(0, 49)
+                        url: img,
+                        size: new google.maps.Size(50, 50),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(0, 49)
                     };
                 }
                 if (marker == null) {
@@ -34,7 +34,7 @@
                     marker.position = new google.maps.LatLng(lat, lon);
                 }
             },
-            removeAllMarkers : function() {
+            removeAllMarkers: function () {
                 var marker;
                 for (var markerId in markerBuffer) {
                     if (!markerBuffer.hasOwnProperty(markerId))
@@ -50,16 +50,16 @@
     var currentPos = null;
     var activeChannel = null;
 
-    var setLatLon = function(positionObject) {
+    var setLatLon = function (positionObject) {
         if (currentPos == null) {
             map.setCenter(new google.maps.LatLng(
                 positionObject.coords.latitude, positionObject.coords.longitude
             ));
         }
 
-        if (currentPos.lat != positionObject.coords.latitude || currentPos.lon != positionObject.coords.longitude) {
-
-        }
+        //if (currentPos.lat != positionObject.coords.latitude || currentPos.lon != positionObject.coords.longitude) {
+        //
+        //}
 
         currentPos = new Location(
             0,
@@ -67,10 +67,10 @@
             positionObject.coords.longitude,
             Math.round(positionObject.coords.accuracy)
         );
-    }
+    };
 
 
-    var geoSuccess = function(position) {
+    var geoSuccess = function (position) {
         console.log(position);
         $('#log').text(JSON.stringify(position.coords));
         setLatLon(position);
@@ -80,19 +80,19 @@
         }
     };
 
-    var geoError = function(error) {
+    var geoError = function (error) {
         console.log(error);
     };
 
     if (!!navigator.geolocation) {
-        var geoWatchId = navigator.geolocation.watchPosition( geoSuccess, geoError, { enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
+        var geoWatchId = navigator.geolocation.watchPosition(geoSuccess, geoError, { enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
     }
 
     var startChannelUpdate = function () {
         activeChannel = new Channel(app.channelId != '' ? app.channelId : null, currentPos);
         activeChannel.onUpdate(
             function (channel) {
-                if (!channel.locations) {
+                if (!channel.locations.length) {
                     return
                 }
                 var locationIndex = channel.locations.length - 1;
@@ -110,10 +110,10 @@
             }
         );
         activeChannel.onNotAuthorized(
-            function() {
+            function () {
                 $('#modal-notLoggedIn')
                     .modal('show')
-                    .on('hide.bs.modal', function(ev){
+                    .on('hide.bs.modal', function (ev) {
                         console.log(ev);
                         ev.preventDefault();
                     });
@@ -122,7 +122,6 @@
         activeChannel.start();
         $('#btn-start').prop('disabled', true).hide();
     };
-
 
 
     // Autostart
