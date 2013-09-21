@@ -48,7 +48,8 @@ class Channel
     {
         $users = array();
         foreach ($this->getUsers() as $user) {
-            $users[] = $user->toArray();
+            $users[$user->getId()] = $user->toArray();
+            unset($users[$user->getId()]['id']);
         }
         $locations = array();
         foreach ($this->getLocations() as $location) {
