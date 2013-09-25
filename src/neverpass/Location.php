@@ -22,10 +22,10 @@ class Location
     private $accuracy;
 
     /**
-     * @param int $heading
-     * @param float $latitude
-     * @param float $longitude
-     * @param int $accuracy
+     * @param int    $heading
+     * @param float  $latitude
+     * @param float  $longitude
+     * @param int    $accuracy
      * @param string $userId
      */
     function __construct($heading, $latitude, $longitude, $accuracy, $userId)
