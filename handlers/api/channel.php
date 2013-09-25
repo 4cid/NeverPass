@@ -12,6 +12,10 @@ try {
         throw $e;
     }
 }
+// Close session
+$container->getSession()->save();
+session_write_close();
+
 // Request
 $request = $container->getRequest();
 
