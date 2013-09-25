@@ -52,7 +52,14 @@ class Container extends \Pimple
             if (!$conf) {
                 throw new \Exception('Missing Google_PlusService in conf.yml');
             }
-            $client = new \Google_Client();
+            // https://gaeforphp-blog.appspot.com/2013/08/06/using-the-google-apis-client-library-for-php-with-app-engine/
+            $client = new \Google_Client(array(
+                'ioClass' => 'Google_HttpStreamIO',
+                'cacheClass' => 'Google_MemcacheCache',
+
+                'ioMemCacheCache_host' => 'does_not_matter',
+                'ioMemCacheCache_port' => '37337',
+            ));
             $client->setApplicationName('NeverPass');
             $client->setClientId($conf['ClientId']);
             $client->setClientSecret($conf['ClientSecret']);
@@ -73,7 +80,12 @@ class Container extends \Pimple
         });
 
         $this['url'] = $this->share(function (Container $c) {
-            return $c->getRequest()->getScheme() . '://' . $c->getRequest()->getHttpHost();
+            $host = $c->getRequest()->getHttpHost();
+            // Fix: der GAE Server haut am Ende ein : hin.
+            if ($host[strlen($host) - 1] == ':') {
+                $host = substr($host, 0, -1);
+            }
+            return $c->getRequest()->getScheme() . '://' . $host;
         });
 
         $this['isUserLoggedIn'] = function (Container $c) {

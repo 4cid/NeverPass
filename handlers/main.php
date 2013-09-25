@@ -1,6 +1,7 @@
 <?php
 
 $request = $container->getRequest();
+$container->getSession();
 $uri = substr((string)$request->getRequestUri(), 1);
 $channel = false;
 if ($uri) {
