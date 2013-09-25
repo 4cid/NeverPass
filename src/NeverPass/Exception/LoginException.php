@@ -1,10 +1,10 @@
 <?php
 
-namespace NeverPass\exception;
+namespace NeverPass\Exception;
 
 /**
  * Class LoginException
- * @package NeverPass\exception
+ * @package NeverPass\Exception
  */
 class LoginException extends \Exception
 {
