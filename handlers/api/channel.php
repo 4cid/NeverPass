@@ -64,7 +64,7 @@ if (($timestamp = $request->get('timestamp')) && ($channelId = $request->get('id
         if ($sec >= 20) break;
         sleep(1);
         $channel = \NeverPass\Channel::getCached($channelId);
-        $sec += 5;
+        $sec += 1;
     }
 }
 
