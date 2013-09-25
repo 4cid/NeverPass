@@ -2,7 +2,7 @@
 
 namespace NeverPass;
 
-use NeverPass\exception\LoginException;
+use NeverPass\Exception\LoginException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
