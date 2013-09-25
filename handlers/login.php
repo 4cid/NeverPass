@@ -1,17 +1,15 @@
 <?php
 
-// core
-require_once __DIR__ . '/../bootstrap.php';
-
 $client = $container->getGoogleClient();
 $session = $container->getSession();
 $request = $container->getRequest();
+
 if ($channelId = $request->get('channelId')) {
     $session->set('channelId', $channelId);
 }
 $plus = new Google_PlusService($client);
 
-if (isset($_GET['code'])) {
+if (strlen($request->get('code'))) {
     $client->authenticate();
     $session->set('gptoken', $client->getAccessToken());
 
@@ -29,11 +27,11 @@ if (isset($_GET['code'])) {
     $url = $container->getUrl();
     if ($channelId = $session->get('channelId')) {
         $url .= '/' . $channelId;
+        $session->remove('channelId');
     }
 
     $response = new \Symfony\Component\HttpFoundation\RedirectResponse($url);
     $response->send();
-
 } else {
     $response = new \Symfony\Component\HttpFoundation\RedirectResponse($client->createAuthUrl());
     $response->send();

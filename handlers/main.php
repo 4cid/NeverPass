@@ -1,8 +1,5 @@
 <?php
 
-// core
-require_once __DIR__ . '/../bootstrap.php';
-
 $request = $container->getRequest();
 $uri = substr((string)$request->getRequestUri(), 1);
 $channel = false;
@@ -19,7 +16,7 @@ if ($uri) {
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Bootstrap -->
@@ -45,7 +42,9 @@ if ($uri) {
                 <li><a href="#contact" data-toggle="tab">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-form">
-                <li><button class="btn btn-default" id="btn-start" style="margin-right: 5px">Start Channel</button></li>
+                <li>
+                    <button class="btn btn-default" id="btn-start" style="margin-right: 5px">Start Channel</button>
+                </li>
                 <li>
                     <!-- https://developers.google.com/+/web/share/interactive -->
                     <button
@@ -61,9 +60,9 @@ if ($uri) {
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <?php if($container->isUserLoggedIn()) { ?>
+                <?php if ($container->isUserLoggedIn()) { ?>
                     <li><a href="/logout">Logout</a></li>
-                    <li><img width="100%" src="<?php echo $container->getCurrentUser()->getImageUrl() ?>" ></li>
+                    <li><img width="100%" src="<?php echo $container->getCurrentUser()->getImageUrl() ?>"></li>
                 <?php } else { ?>
                     <li><a href="/login<?= $channel ? '?channelId=' . $channel->getId() : '' ?>">Login</a></li>
                 <?php } ?>
@@ -78,7 +77,9 @@ if ($uri) {
     <div class="tab-content">
         <div class="tab-pane map active" id="home">
 
-            <div><pre id="log"></pre></div>
+            <div>
+                <pre id="log"></pre>
+            </div>
             <div id="the-map" style="background-color: #444;"></div>
 
         </div>
@@ -86,6 +87,7 @@ if ($uri) {
 
             <div class="jumbotron">
                 <h1>About</h1>
+
                 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
             </div>
 
@@ -94,6 +96,7 @@ if ($uri) {
 
             <div class="jumbotron">
                 <h1>Contact</h1>
+
                 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
             </div>
 
@@ -126,16 +129,19 @@ if ($uri) {
 <script src="/lib/history.js/scripts/bundled/html5/jquery.history.js"></script>
 <script>
     var app = {
-       channelId: '<?= $channel ? $channel->getId() : '' ?>'
+        channelId: '<?= $channel ? $channel->getId() : '' ?>'
     };
 </script>
 <script src="/js/channel.js"></script>
 <script src="/js/app.js"></script>
 <script type="text/javascript">
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    (function () {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
         po.src = 'https://apis.google.com/js/client:plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
     })();
 </script>
 </body>

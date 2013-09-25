@@ -1,8 +1,5 @@
 <?php
 
-// core
-require_once __DIR__ . '/../../bootstrap.php';
-
 // Check User LogIn
 try {
     $user = $container->getCurrentUser();
