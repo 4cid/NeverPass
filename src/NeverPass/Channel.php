@@ -29,6 +29,7 @@ class Channel
 
     /**
      * @param $id
+     *
      * @return bool
      */
     private function isIdValid($id)
@@ -70,7 +71,7 @@ class Channel
 
     /**
      * @param \Memcached $memcached
-     * @param \mysqli $sql
+     * @param \mysqli    $sql
      */
     public function save(\Memcached $memcached = null, \mysqli $sql = null)
     {
@@ -146,9 +147,10 @@ class Channel
     }
 
     /**
-     * @param $id
+     * @param            $id
      * @param \Memcached $memcached
-     * @param \mysqli $sql
+     * @param \mysqli    $sql
+     *
      * @return Channel
      */
     public static function getCached($id, \Memcached $memcached = null, \mysqli $sql = null)

@@ -13,15 +13,15 @@ handlers:
 - url: /lib
   static_dir: static/lib
 # Auth
-- url: /login
-  script: handlers/login.php
-- url: /logout
-  script: handlers/logout.php
+#- url: /login
+#  script: handlers/login.php
+#- url: /logout
+#  script: handlers/logout.php
 # Page + API
-- url: /api/channel
-  script: handlers/api/channel.php
-- url: /([\w]{32})?
-  script: handlers/main.php
+#- url: /api/channel
+#  script: handlers/api/channel.php
+#- url: /([\w]{32})?
+#  script: handlers/main.php
 # 404
 - url: .*
-  script: handlers/404.php
+  script: handlers/index.php

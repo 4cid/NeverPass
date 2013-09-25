@@ -1,8 +1,5 @@
 <?php
 
-// core
-require_once __DIR__ . '/../../bootstrap.php';
-
 // Check User LogIn
 try {
     $user = $container->getCurrentUser();
@@ -65,7 +62,7 @@ if (($timestamp = $request->get('timestamp')) && ($channelId = $request->get('id
     $sec = 0;
     while ($channel->getTimestamp() <= $timestamp) {
         if ($sec >= 20) break;
-        sleep(5);
+        sleep(1);
         $channel = \NeverPass\Channel::getCached($channelId);
         $sec += 5;
     }
