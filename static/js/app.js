@@ -136,6 +136,7 @@
     // Connecting controls
 
     $('#btn-start').on('click', function () {
+        $('#g-share-btn').removeClass('hide');
         startChannelUpdate();
     });
 

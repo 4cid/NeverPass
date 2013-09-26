@@ -26,7 +26,8 @@ if ($uri) {
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -34,22 +35,19 @@ if ($uri) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">NeverPass</a>
+            <a class="navbar-brand" href="/">NeverPass</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                <li><a href="#about" data-toggle="tab">About</a></li>
-                <li><a href="#contact" data-toggle="tab">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-form">
+                <?php if ($container->isUserLoggedIn() && !$channel) { ?>
                 <li>
-                    <button class="btn btn-default" id="btn-start" style="margin-right: 5px">Start Channel</button>
+                    <button class="btn btn-success navbar-btn" id="btn-start" style="margin-right: 5px">Start Channel</button>
                 </li>
-                <li>
+                <?php } ?>
+                <li <?php if (!$container->isUserLoggedIn() || !$channel) { ?>class="hide"<?php } ?> id="g-share-btn">
                     <!-- https://developers.google.com/+/web/share/interactive -->
                     <button
-                        class="g-interactivepost btn btn-default"
+                        class="g-interactivepost btn btn-success navbar-btn"
                         data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
                         data-contenturl="<?= $container->getUrl() . $request->getRequestUri() ?>"
                         data-calltoactionlabel="INVITE"
@@ -59,49 +57,27 @@ if ($uri) {
                         Tell your friends
                     </button>
                 </li>
+                <li><a target="_blank" href="http://www.neverpass.me" >More about NeverPass</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <?php if ($container->isUserLoggedIn()) { ?>
-                    <li><a href="/logout">Logout</a></li>
-                    <li><img width="100%" src="<?php echo $container->getCurrentUser()->getImageUrl() ?>"></li>
-                <?php } else { ?>
-                    <li><a href="/login<?= $channel ? '?channelId=' . $channel->getId() : '' ?>">Login</a></li>
-                <?php } ?>
-            </ul>
+            <?php if ($container->isUserLoggedIn()) { ?>
+                <a class="navbar-right" href="/logout">
+                    <button type="button" class="btn btn-warning navbar-btn">Logout</button>
+                </a>
+            <?php } else { ?>
+                <a class="navbar-right" href="/login<?= $channel ? '?channelId=' . $channel->getId() : '' ?>">
+                    <button type="button" class="btn btn-primary navbar-btn">Login</button>
+                </a>
+            <?php } ?>
         </div>
-        <!--/.nav-collapse -->
     </div>
-</div>
+</nav>
 
 <div class="container container-slim">
-
-    <div class="tab-content">
-        <div class="tab-pane map active" id="home">
-
-            <div>
-                <pre id="log"></pre>
-            </div>
-            <div id="the-map" style="background-color: #444;"></div>
-
+    <div class="map">
+        <div>
+            <pre id="log"></pre>
         </div>
-        <div class="tab-pane" id="about">
-
-            <div class="jumbotron">
-                <h1>About</h1>
-
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-            </div>
-
-        </div>
-        <div class="tab-pane" id="contact">
-
-            <div class="jumbotron">
-                <h1>Contact</h1>
-
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-            </div>
-
-        </div>
+        <div id="the-map" style="background-color: #444;"></div>
     </div>
 </div>
 
@@ -135,6 +111,7 @@ if ($uri) {
 </script>
 <script src="/js/channel.js"></script>
 <script src="/js/app.js"></script>
+<?php if($channel) { ?>
 <script type="text/javascript">
     (function () {
         var po = document.createElement('script');
@@ -145,5 +122,6 @@ if ($uri) {
         s.parentNode.insertBefore(po, s);
     })();
 </script>
+<?php } ?>
 </body>
 </html>
