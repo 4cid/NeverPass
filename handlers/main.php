@@ -44,18 +44,26 @@ if ($uri) {
                     <button class="btn btn-success navbar-btn" id="btn-start" style="margin-right: 5px">Start Channel</button>
                 </li>
                 <?php } ?>
-                <li <?php if (!$container->isUserLoggedIn() || !$channel) { ?>class="hide"<?php } ?> id="g-share-btn">
-                    <!-- https://developers.google.com/+/web/share/interactive -->
-                    <button
-                        class="g-interactivepost btn btn-success navbar-btn"
-                        data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
-                        data-contenturl="<?= $container->getUrl() . $request->getRequestUri() ?>"
-                        data-calltoactionlabel="INVITE"
-                        data-prefilltext="Join my NeverPass channel!"
-                        data-calltoactionurl="<?= $container->getUrl() . $request->getRequestUri() ?>"
-                        data-cookiepolicy="single_host_origin">
-                        Tell your friends
-                    </button>
+                <li id="g-share-box">
+                    <?php if ($container->isUserLoggedIn()) { ?>
+                        <!-- https://developers.google.com/+/web/share/interactive -->
+                        <?php if ($channel) { ?>
+                            <button
+                                class="g-interactivepost btn btn-success navbar-btn"
+                                data-clientid="<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>"
+                                data-contenturl="<?= $container->getUrl() . $request->getRequestUri() ?>"
+                                data-calltoactionlabel="INVITE"
+                                data-prefilltext="Join my NeverPass channel!"
+                                data-calltoactionurl="<?= $container->getUrl() . $request->getRequestUri() ?>"
+                                data-cookiepolicy="single_host_origin">
+                                Invite your friends!
+                            </button>
+                        <?php } else {?>
+                            <button id="g-share-btn"  class="btn btn-success navbar-btn hide">
+                                Invite your friends!
+                            </button>
+                        <?php } ?>
+                    <?php } ?>
                 </li>
                 <li><a target="_blank" href="http://www.neverpass.me" >More about NeverPass</a></li>
             </ul>
@@ -107,6 +115,14 @@ if ($uri) {
 <script>
     var app = {
         channelId: '<?= $channel ? $channel->getId() : '' ?>'
+    };
+    var gShareBtn = {
+        contenturl: '<?= $container->getUrl() . $request->getRequestUri() ?>',
+        clientid: '<?= $container->getConfig()->get('Google_PlusService.ClientId') ?>',
+        cookiepolicy: 'single_host_origin',
+        prefilltext: 'Join my NeverPass channel!',
+        calltoactionlabel: 'INVITE',
+        calltoactionurl: '<?= $container->getUrl() . $request->getRequestUri() ?>'
     };
 </script>
 <script src="/js/channel.js"></script>

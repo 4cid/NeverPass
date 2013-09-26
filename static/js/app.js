@@ -95,9 +95,11 @@
                 if (app.channelId == '') {
                     app.channelId = channel.id;
                     History.pushState(null, null, "/" + channel.id);
-                    var btn = $('#g-share-btn').find('button');
-                    btn.attr('data-contenturl', btn.attr('data-contenturl') + channel.id);
-                    btn.attr('data-calltoactionurl', btn.attr('data-calltoactionurl') + channel.id);
+                    $('#g-share-btn').removeClass('hide');
+                    var options = gShareBtn;
+                    options.contenturl += channel.id;
+                    options.calltoactionurl += channel.id;
+                    gapi.interactivepost.render('g-share-btn', gShareBtn);
                 }
                 if (!channel.locations.length) {
                     return
@@ -139,7 +141,6 @@
     // Connecting controls
 
     $('#btn-start').on('click', function () {
-        $('#g-share-btn').removeClass('hide');
         startChannelUpdate();
     });
 
