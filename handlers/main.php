@@ -111,7 +111,7 @@ if ($uri) {
 </script>
 <script src="/js/channel.js"></script>
 <script src="/js/app.js"></script>
-<?php if($channel) { ?>
+<?php if($container->isUserLoggedIn()) { ?>
 <script type="text/javascript">
     (function () {
         var po = document.createElement('script');

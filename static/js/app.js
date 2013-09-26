@@ -95,6 +95,9 @@
                 if (app.channelId == '') {
                     app.channelId = channel.id;
                     History.pushState(null, null, "/" + channel.id);
+                    var btn = $('#g-share-btn').find('button');
+                    btn.attr('data-contenturl', btn.attr('data-contenturl') + channel.id);
+                    btn.attr('data-calltoactionurl', btn.attr('data-calltoactionurl') + channel.id);
                 }
                 if (!channel.locations.length) {
                     return
